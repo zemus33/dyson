@@ -111,8 +111,10 @@ class DysonMenuApp(NSObject):
 
         status = "ON" if d.is_on else "OFF"
         speed_str = f"Speed: {d.speed}" if d.speed else "Speed: Auto"
+        temp_f = round(d.temperature * 9 / 5 - 459.67)
         menu.addItemWithTitle_action_keyEquivalent_(f"Fan: {status}", None, "")
         menu.addItemWithTitle_action_keyEquivalent_(speed_str, None, "")
+        menu.addItemWithTitle_action_keyEquivalent_(f"{temp_f}°F · {d.humidity}% RH", None, "")
         menu.addItem_(NSMenuItem.separatorItem())
 
         on_item = menu.addItemWithTitle_action_keyEquivalent_("Turn On", "turnOn:", "")
