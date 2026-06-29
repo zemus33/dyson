@@ -26,12 +26,11 @@ Copy `config.example.json` to `config.json` and fill in your values:
 {
   "serial": "AB1-US-ABC1234A",
   "credential": "your-credential-here",
-  "device_type": "438",
-  "device_ip": "192.168.1.100"
+  "device_type": "438"
 }
 ```
 
-- **device_ip**: Your fan's local IP address (check your router's DHCP table)
+- **device_ip** (optional): Your fan's local IP address. If omitted, the app auto-discovers it via mDNS.
 - **device_type**: Common types: `438` (Pure Cool), `455` (Hot+Cool), `469` (Pure Cool Link)
 
 ## Run
