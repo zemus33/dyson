@@ -39,4 +39,4 @@ Copy `config.example.json` to `config.json` and fill in your values:
 python dyson_menu.py
 ```
 
-A 💨 icon appears in your menu bar with controls for power, speed, oscillation, and night mode.
+A fan icon appears in your menu bar with controls for power, speed, oscillation, and night mode.
