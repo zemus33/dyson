@@ -127,17 +127,23 @@ class DysonMenuApp(NSObject):
             )
             item.setTarget_(self)
             item.setTag_(spd)
+            if d.speed == spd:
+                item.setState_(1)
         auto_item = menu.addItemWithTitle_action_keyEquivalent_("Auto", "toggleAuto:", "")
         auto_item.setTarget_(self)
+        if d.auto_mode:
+            auto_item.setState_(1)
         menu.addItem_(NSMenuItem.separatorItem())
 
-        osc_label = "Oscillation: " + ("ON" if d.oscillation else "OFF")
-        osc_item = menu.addItemWithTitle_action_keyEquivalent_(osc_label, "toggleOsc:", "")
+        osc_item = menu.addItemWithTitle_action_keyEquivalent_("Oscillation", "toggleOsc:", "")
         osc_item.setTarget_(self)
+        if d.oscillation:
+            osc_item.setState_(1)
 
-        night_label = "Night Mode: " + ("ON" if d.night_mode else "OFF")
-        night_item = menu.addItemWithTitle_action_keyEquivalent_(night_label, "toggleNight:", "")
+        night_item = menu.addItemWithTitle_action_keyEquivalent_("Night Mode", "toggleNight:", "")
         night_item.setTarget_(self)
+        if d.night_mode:
+            night_item.setState_(1)
         menu.addItem_(NSMenuItem.separatorItem())
 
         quit_item = menu.addItemWithTitle_action_keyEquivalent_("Quit", "quit:", "q")
