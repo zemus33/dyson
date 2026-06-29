@@ -11,11 +11,15 @@ from AppKit import (
     NSMenu,
     NSMenuItem,
     NSVariableStatusItemLength,
+    NSImage,
     NSApp,
 )
 import libdyson
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
+ICON_OFF = os.path.join(os.path.dirname(__file__), "icon_off.png")
+ICON_ON_DARK = os.path.join(os.path.dirname(__file__), "icon_on_dark.png")
+ICON_ON_LIGHT = os.path.join(os.path.dirname(__file__), "icon_on_light.png")
 
 
 def load_config():
@@ -32,7 +36,13 @@ class DysonMenuApp(NSObject):
         self.status_item = NSStatusBar.systemStatusBar().statusItemWithLength_(
             NSVariableStatusItemLength
         )
-        self.status_item.setTitle_("💨")
+        self.icon_off = NSImage.alloc().initWithContentsOfFile_(ICON_OFF)
+        self.icon_off.setTemplate_(True)
+        self.icon_on_dark = NSImage.alloc().initWithContentsOfFile_(ICON_ON_DARK)
+        self.icon_on_dark.setTemplate_(False)
+        self.icon_on_light = NSImage.alloc().initWithContentsOfFile_(ICON_ON_LIGHT)
+        self.icon_on_light.setTemplate_(False)
+        self.status_item.setImage_(self.icon_off)
 
         menu = NSMenu.new()
         menu.addItemWithTitle_action_keyEquivalent_("Connecting...", None, "")
@@ -82,8 +92,21 @@ class DysonMenuApp(NSObject):
         return result["ip"]
 
     @objc.python_method
+    def _is_dark_mode(self):
+        button = self.status_item.button()
+        if button and button.effectiveAppearance():
+            name = button.effectiveAppearance().name()
+            return "Dark" in str(name)
+        return True
+
+    @objc.python_method
     def _build_menu(self):
         d = self.device
+        if d.is_on:
+            icon = self.icon_on_dark if self._is_dark_mode() else self.icon_on_light
+        else:
+            icon = self.icon_off
+        self.status_item.setImage_(icon)
         menu = NSMenu.new()
 
         status = "ON" if d.is_on else "OFF"
